@@ -4,16 +4,12 @@ const { users, photos, tags } = require('./data');
 module.exports = {
     Photo: {
         url: parent => {
-            console.log(parent)
             return `http://yoursite.com/img/${parent.id}.jpg`;
         },
         postedBy: parent => {
-            console.log(parent)
-            console.log(users)
             return users.find(u => u.githubLogin === parent.githubUser)
         },
         taggedUsers: parent => {
-            console.log(tags, parent)
             return tags.filter(tag => tag.photoID === parent.id)
                        .map(tag => tag.userID)
                        .map(userID => users.find(u => u.githubLogin === userID))
