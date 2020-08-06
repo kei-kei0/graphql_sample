@@ -14,7 +14,7 @@ db.photos.insertMany([
         "description": "SamplePhoto1_desc",
         "category": "ACTION",
         "githubUser": "gPlake",
-        "created": "3-28-1977"
+        "created": "1997-07-03T19:09:32.308Z"
     },
     {
         "id": "2",
@@ -22,7 +22,7 @@ db.photos.insertMany([
         "description": "SamplePhoto2_desc",
         "category": "SELFIE",
         "githubUser": "sSchmidt",
-        "created": "1-2-1985"
+        "created": "1985-07-03T19:09:32.308Z"
     },
     {
         "id": "3",
@@ -31,6 +31,14 @@ db.photos.insertMany([
         "category": "LANDSCAPE",
         "githubUser": "sSchmidt",
         "created": "2018-04-05T19:09:55.308Z"
+    },
+    {
+        "id": "4",
+        "name": "SamplePhoto4",
+        "description": "SamplePhoto4_desc",
+        "category": "SELFIE",
+        "githubUser": "gPlake",
+        "created": "2000-04-05T19:09:55.308Z"
     },
 ])
 
@@ -41,4 +49,3 @@ db.tags.insertMany([
     {"photoID": "2", "userID": "mHattrup"},
     {"photoID": "2", "userID": "gPlake"},
 ])
-

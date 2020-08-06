@@ -13,5 +13,5 @@ http://localhost:4001/playground
 起動
 docker-compose -f ./db/docker-compose.yaml up
 停止
-docker-compose -f ./db/docker-compose.yaml down
+docker-compose -f ./db/docker-compose.yaml down --rmi all --volumes
 ```

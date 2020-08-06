@@ -1,14 +1,19 @@
-const { photos } = require('./data');
 const { DateTime } = require('./Type');
 
 module.exports = {
-    totalPhotos: () => photos.length,
-    allPhotos: (parent, args) => {
+    totalPhotos: (parent, args, { db }) => {
+        return db.collection('photos').estimatedDocumentCount();
+    },
+    allPhotos: (parent, args, { db }) => {
         if (args && args.after) {
-            return photos.filter(photo => {
-                return DateTime.parseValue(photo.created) >= DateTime.parseValue(args.after);
-            })
+            return db.collection('photos').find({ created: { $gt: DateTime.serialize(args.after) }}).toArray()
         }
-        return photos;
+        return db.collection('photos').find().toArray();
+    },
+    totalUsers: (parent, args, { db }) => {
+        return db.collection('users').estimatedDocumentCount();
+    },
+    allUsers: (parent, args, { db }) => {
+        return db.collection('users').find().toArray();
     }
 }
