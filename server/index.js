@@ -1,15 +1,21 @@
 const resolvers = require('./resolvers');
+const express = require('express');
+const expressPlayground = require('graphql-playground-middleware-express');
+const { ApolloServer } = require('apollo-server-express');
 const { readFileSync } = require('fs');
-const { ApolloServer } = require('apollo-server');
-
-require('dotenv').config()
 const typeDefs = readFileSync('./typeDefs.graphql', 'UTF-8')
 
+const app = express();
 const server = new ApolloServer({
     typeDefs,
     resolvers
 });
+server.applyMiddleware({ app });
 
-console.log(resolvers)
-
-server.listen(4001).then(({ url }) => console.log(`Graphql Service is running on ${url}`));
+app.get('/playground', expressPlayground({ endpoint: '/graphql' }))
+app.get('/', (req, res) => {
+    res.send('welcome to the graphql Sample API');
+})
+app.listen({ port: 4001 }, () => {
+    console.log(`Graphql Service is running on ${server.graphqlPath}`)
+});
