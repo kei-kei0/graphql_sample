@@ -38,5 +38,12 @@ http://localhost:4001/?code={YOUR_CODE}
 ## step2: get access_token
 ```
 curl localhost:4001/graphql -H 'Content-Type: application/json' \
---data '{"query" : "mutation($code:String!){githubAuth(code:$code){ token user { githubLogin name avator } } }", "variables" : "{\"code\" : \"<YOUR_CODE>\"}"}'
+--data '{"query" : "mutation($code:String!){githubAuth(code:$code){ token user { githubLogin name avatar } } }", "variables" : "{\"code\" : \"<YOUR_CODE>\"}"}'
+```
+
+# How to add fakeUser
+```
+COUNT=2
+curl localhost:4001/graphql -H 'Content-Type: application/json' \
+--data '{"query" : "mutation($count:Int!){addFakeUsers(count:$count){ githubLogin name avatar } }", "variables" : "{\"count\" : ${COUNT}}"}'
 ```

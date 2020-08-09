@@ -1,9 +1,9 @@
 
 db.users.drop();
 db.users.insertMany([
-    {"githubLogin": "mHattrup", "name": "Mike Hattrup"},
-    {"githubLogin": "gPlake", "name": "Glen Plake"},
-    {"githubLogin": "sSchmidt", "name": "Scot Shmidt"},
+    {"githubLogin": "mHattrup", "name": "Mike Hattrup", "created": "2017-04-05T19:09:55.308Z", "githubToken": "token1"},
+    {"githubLogin": "gPlake", "name": "Glen Plake", "created": "2017-04-05T19:09:55.308Z", "githubToken": "token2"},
+    {"githubLogin": "sSchmidt", "name": "Scot Shmidt", "created": "2017-04-05T19:09:55.308Z", "githubToken": "token3"},
 ])
 
 db.photos.drop();
