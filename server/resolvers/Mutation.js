@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const { authorizeWithGithub } = require('./lib/util');
 require('dotenv').config();
 
@@ -5,8 +6,20 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 module.exports = {
-    async postPhoto(parent, args, { db, currentUser }) {
-        console.log(parent, args)
+    addFakeUsers: async(parent, { count }, { db }) => {
+        const randomUserApi = `https://randomuser.me/api/?results=${count}`;
+        const { results } = await fetch(randomUserApi).then(res => res.json());
+        const users = results.map(r => ({
+            githubLogin: r.login.username,
+            name: `${r.name.first} ${r.name.last}`,
+            avatar: r.picture.thumbnail,
+            created: r.registered.date,
+            githubToken: r.login.sha1
+        }));
+        await db.collection('users').insert(users);
+        return users
+    },
+    postPhoto: async(parent, args, { db, currentUser }) => {
         if(!currentUser) {
             throw new Error('only an authorized user can post a photo.'); 
         }
@@ -16,15 +29,24 @@ module.exports = {
             created: new Date()
         }
         const { insertedIds } = await db.collection('photos').insert(newPhoto);
-        console.log(typeof insertedIds, insertedIds)
         newPhoto.id = insertedIds[0];
         return newPhoto;
     },
-    async githubAuth(parent, { code }, { db }) {
+    fakeUserAuth: async(parent, { githubLogin }, { db }) => {
+        const user = await db.collection('users').findOne({ githubLogin });
+        if (!user) {
+            throw new Error(`Cannot find user with githubLogin "${githubLogin}"`);
+        }
+        return {
+            token: user.githubToken,
+            user
+        }
+    },
+    githubAuth: async(parent, { code }, { db }) => {
         const {
             message,
             access_token,
-            avator_url,
+            avatar_url,
             login,
             name
         } = await authorizeWithGithub({
@@ -39,7 +61,7 @@ module.exports = {
             name,
             githubLogin: login,
             githubToken: access_token,
-            avatar: avator_url
+            avatar: avatar_url
         }
         const { ops:[user] } = await db.collection('users').replaceOne({ githubLogin: login }, latestUserInfo, { upsert: true })
         return  { user, token: access_token }
