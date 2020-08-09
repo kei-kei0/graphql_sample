@@ -3,23 +3,21 @@ const { users, photos, tags } = require('./data');
 
 module.exports = {
     Photo: {
-        url: parent => {
-            return `http://yoursite.com/img/${parent.id}.jpg`;
+        id: parent => parent.id || parent._id,
+        url: parent => `/img//photos/${parent._id}.jpg`,
+        postedBy: (parent, args, { db }) => {
+            return db.collection('users').findOne({ githubLogin: parent.githubLogin });
         },
-        postedBy: parent => {
-            return users.find(u => u.githubLogin === parent.githubUser)
-        },
-        taggedUsers: parent => {
-            return tags.filter(tag => tag.photoID === parent.id)
-                       .map(tag => tag.userID)
-                       .map(userID => users.find(u => u.githubLogin === userID))
+        taggedUsers: (parent, args, { db }) => {
+            return db.collection('tags').find({ photoID: parent._id.toString() }).toArray().map(tag => tag.githubLogin);
         }
     },
     User: {
-        inPhotos: parent => {
-            return tags.filter(tag => tag.userID === parent.id)
-                       .map(tag => tag.photoID)
-                       .map(photoID => photos.find(p => p.id === photoID))
+        postedPhotos: (parent, args, { db }) => {
+            return db.collection('photos').find({ githubLogin: parent.githubLogin }).toArray();
+        },
+        inPhotos: async (parent, args, { db }) => {
+            return db.collection('tags').find({ githubLogin: parent.githubLogin }).toArray().map(tag => tag.photoID);
         }
     },
     DateTime: new GraphQLScalarType({

@@ -13,7 +13,7 @@ db.photos.insertMany([
         "name": "SamplePhoto1",
         "description": "SamplePhoto1_desc",
         "category": "ACTION",
-        "githubUser": "gPlake",
+        "githubLogin": "gPlake",
         "created": "1997-07-03T19:09:32.308Z"
     },
     {
@@ -21,7 +21,7 @@ db.photos.insertMany([
         "name": "SamplePhoto2",
         "description": "SamplePhoto2_desc",
         "category": "SELFIE",
-        "githubUser": "sSchmidt",
+        "githubLogin": "sSchmidt",
         "created": "1985-07-03T19:09:32.308Z"
     },
     {
@@ -29,7 +29,7 @@ db.photos.insertMany([
         "name": "SamplePhoto3",
         "description": "SamplePhoto3_desc",
         "category": "LANDSCAPE",
-        "githubUser": "sSchmidt",
+        "githubLogin": "sSchmidt",
         "created": "2018-04-05T19:09:55.308Z"
     },
     {
@@ -37,15 +37,15 @@ db.photos.insertMany([
         "name": "SamplePhoto4",
         "description": "SamplePhoto4_desc",
         "category": "SELFIE",
-        "githubUser": "gPlake",
+        "githubLogin": "gPlake",
         "created": "2000-04-05T19:09:55.308Z"
     },
 ])
 
 db.tags.drop();
 db.tags.insertMany([
-    {"photoID": "1", "userID": "gPlake"},
-    {"photoID": "2", "userID": "sSchmidt"},
-    {"photoID": "2", "userID": "mHattrup"},
-    {"photoID": "2", "userID": "gPlake"},
+    {"photoID": "1", "githubLogin": "gPlake"},
+    {"photoID": "2", "githubLogin": "sSchmidt"},
+    {"photoID": "2", "githubLogin": "mHattrup"},
+    {"photoID": "2", "githubLogin": "gPlake"},
 ])

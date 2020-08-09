@@ -14,13 +14,16 @@ const start = async() => {
         { useUnifiedTopology: true, useNewUrlParser: true }
     );
     const db = dbConnection.db('dev');
-    const context = { db };
 
     const app = express();
     const server = new ApolloServer({
         typeDefs,
         resolvers,
-        context
+        context: async ({ req }) => {
+            const githubToken = req.headers.authorization;
+            const currentUser = await db.collection('users').findOne({ githubToken })
+            return { db, currentUser }
+        }
     });
     server.applyMiddleware({ app });
 
